@@ -1,0 +1,14 @@
+{
+  "name": "infostreams/excel-merge",
+  "license": "MIT",
+  "description": "Merges two or more Excel files into one file",
+  "keywords": ["excel", "merge", "combine", "xlsx", "xls", "xlsm", "PHPExcel"],
+  "authors": [
+    {
+      "name": "Edward Akerboom",
+      "email": "github@infostreams.net",
+      "homepage": "https://www.infostreams.net/",
+      "role": "Developer"
+    }
+  ]
+}
