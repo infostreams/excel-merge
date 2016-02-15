@@ -1,7 +1,7 @@
 {
   "name": "infostreams/excel-merge",
   "license": "MIT",
-  "description": "A PHP library to merges two or more Excel files into one",
+  "description": "A PHP library to merge two or more Excel files into one",
   "keywords": ["excel", "merge", "combine", "xlsx", "xls", "xlsm", "PHPExcel"],
   "authors": [
     {
