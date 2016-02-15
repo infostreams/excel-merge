@@ -10,5 +10,10 @@
       "homepage": "https://www.infostreams.net/",
       "role": "Developer"
     }
-  ]
+  ],
+  "autoload": {
+    "psr-4": {
+      "ExcelMerge\\": ""
+    }
+  }
 }
