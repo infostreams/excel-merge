@@ -70,8 +70,8 @@ class Styles extends MergeTask {
 			$elems = $existing_xpath->query("//m:{$tag}");
 			$existing_styles[$tag] = array();
 			if ($elems->length > 0) {
-				if ($elems[0]->hasChildNodes()) {
-					foreach ($elems[0]->childNodes as $id => $style) {
+				if ($elems->item(0)->hasChildNodes()) {
+					foreach ($elems->item(0)->childNodes as $id => $style) {
 						$existing_styles[$tag][$id] = array(
 							"node" => $style,
 							"string" => $style->C14N(true, false),
@@ -95,8 +95,8 @@ class Styles extends MergeTask {
 			$elems = $source_xpath->query("//m:{$tag}");
 
 			$mapping[$tag] = array();
-			if ($elems[0]->hasChildNodes()) {
-				foreach ($elems[0]->childNodes as $id => $style) {
+			if ($elems->item(0)->hasChildNodes()) {
+				foreach ($elems->item(0)->childNodes as $id => $style) {
 					$string = $style->C14N(true, false);
 
 					foreach ($existing_styles[$tag] as $e) {
@@ -132,7 +132,7 @@ class Styles extends MergeTask {
 			$elems = $xpath->query("//m:{$tag}");
 
 			if ($elems->length > 0) {
-				$elem = $elems[0];
+				$elem = $elems->item(0);
 				while ($elem->hasChildNodes()) {
 					$elem->removeChild($elem->firstChild);
 				}
@@ -154,8 +154,8 @@ class Styles extends MergeTask {
 		$elems = $existing_xpath->query("//m:cellXfs");
 		$defined_styles = array();
 		if ($elems->length > 0) {
-			if ($elems[0]->hasChildNodes()) {
-				foreach ($elems[0]->childNodes as $id => $style) {
+			if ($elems->item(0)->hasChildNodes()) {
+				foreach ($elems->item(0)->childNodes as $id => $style) {
 					$defined_styles[$id] = array(
 						"node" => $style,
 						"string" => $style->C14N(true, false),
@@ -168,8 +168,8 @@ class Styles extends MergeTask {
 		$styles_mapping = array();
 		$elems = $source_xpath->query("//m:cellXfs");
 		if ($elems->length > 0) {
-			if ($elems[0]->hasChildNodes()) {
-				foreach ($elems[0]->childNodes as $id => $style) {
+			if ($elems->item(0)->hasChildNodes()) {
+				foreach ($elems->item(0)->childNodes as $id => $style) {
 
 					$style->setAttribute('fontId', 0 + $mapping['fonts'][intval($style->getAttribute('fontId'))]);
 					$style->setAttribute('numFmtId', 0 + $mapping['numFmts'][intval($style->getAttribute('numFmtId'))]);
@@ -209,7 +209,7 @@ class Styles extends MergeTask {
 	protected function replaceStylesList($defined_styles, $existing_xpath) {
 		$elems = $existing_xpath->query("//m:cellXfs");
 		if ($elems->length > 0) {
-			$elem = $elems[0];
+			$elem = $elems->item(0);
 			while ($elem->hasChildNodes()) {
 				$elem->removeChild($elem->firstChild);
 			}
