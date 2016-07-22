@@ -171,10 +171,25 @@ class Styles extends MergeTask {
 			if ($elems->item(0)->hasChildNodes()) {
 				foreach ($elems->item(0)->childNodes as $id => $style) {
 
-					$style->setAttribute('fontId', 0 + $mapping['fonts'][intval($style->getAttribute('fontId'))]);
-					$style->setAttribute('numFmtId', 0 + $mapping['numFmts'][intval($style->getAttribute('numFmtId'))]);
-					$style->setAttribute('fillId', 0 + $mapping['fills'][intval($style->getAttribute('fillId'))]);
-					$style->setAttribute('borderId', 0 + $mapping['borders'][intval($style->getAttribute('borderId'))]);
+					$fontId = intval($style->getAttribute('fontId'));
+					if (array_key_exists($fontId, $mapping['fonts'])) {
+						$style->setAttribute('fontId', 0 + $mapping['fonts'][$fontId]);
+					}
+
+					$numFmtId = intval($style->getAttribute('numFmtId'));
+					if (array_key_exists($numFmtId, $mapping['numFmts'])) {
+						$style->setAttribute('numFmtId', 0 + $mapping['numFmts'][$numFmtId]);
+					}
+
+					$fillId = intval($style->getAttribute('fillId'));
+					if (array_key_exists($fillId, $mapping['fills'])) {
+						$style->setAttribute('fillId', 0 + $mapping['fills'][$fillId]);
+					}
+
+					$borderId = intval($style->getAttribute('borderId'));
+					if (array_key_exists($borderId, $mapping['borders'])) {
+						$style->setAttribute('borderId', 0 + $mapping['borders'][$borderId]);
+					}
 
 					$string = $style->C14N(true, false);
 
