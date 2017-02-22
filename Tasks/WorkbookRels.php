@@ -10,11 +10,11 @@ class WorkbookRels extends MergeTask {
 	public function merge() {
 		/**
 		 *  xl/_rels/workbook.xml.rels
-		=> in 'Relationships'
-		=> add
-		<Relationship Id="rId{N}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet{N}.xml"/>
-
-		=> Renumber all rId{X} values to rId{X+1} where X >= N
+		 *  => in 'Relationships'
+		 *  => add
+		 *  <Relationship Id="rId{N}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet{N}.xml"/>
+                 *
+	      	 *  => Renumber all rId{X} values to rId{X+1} where X >= N
 		 *
 		 * -> Re-order and re-number so that we first list all the sheets, and then the rest
 		 */
