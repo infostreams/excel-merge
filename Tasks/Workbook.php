@@ -10,8 +10,8 @@ class Workbook extends MergeTask {
 	public function merge() {
 		/**
 		 * 	7. xl/workbook.xml
-		=> add
-		<sheet name="{New sheet}" sheetId="{N}" r:id="rId{N}"/>
+		 *         => add
+		 *            <sheet name="{New sheet}" sheetId="{N}" r:id="rId{N}"/>
 		 */
 		$filename = "{$this->result_dir}/xl/workbook.xml";
 		$dom = new \DOMDocument();
