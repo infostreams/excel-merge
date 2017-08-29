@@ -95,7 +95,7 @@ class Styles extends MergeTask {
 			$elems = $source_xpath->query("//m:{$tag}");
 
 			$mapping[$tag] = array();
-			if ($elems->item(0)->hasChildNodes()) {
+			if ($elems && $elems->item(0) && $elems->item(0)->hasChildNodes()) {
 				foreach ($elems->item(0)->childNodes as $id => $style) {
 					$string = $style->C14N(true, false);
 
