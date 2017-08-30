@@ -24,9 +24,28 @@ class ExcelMerge {
 
 
 	public function __construct($files = array()) {
-		$this->working_dir = sys_get_temp_dir();
-		$this->working_dir .= DIRECTORY_SEPARATOR . str_replace('\\', '-', get_class($this)) . '-' . date('Ymd-His') . DIRECTORY_SEPARATOR;
-		mkdir($this->working_dir, 0755, true);
+		// create a temporary directory with an understandable name
+		// (comes in use when debugging)
+		for ($i=0; $i < 5; $i++) {
+			$this->working_dir =
+				sys_get_temp_dir() .
+				DIRECTORY_SEPARATOR .
+				'ExcelMerge-' .
+				date('Ymd-His') .
+				'-' .
+				uniqid() .
+				DIRECTORY_SEPARATOR;
+
+			if (!is_dir($this->working_dir)) {
+				mkdir($this->working_dir, 0755, true);
+				break;
+			}
+		}
+
+		if (!is_dir($this->working_dir)) {
+			trigger_error("Could not create temporary working directory {$this->working_dir}", E_USER_ERROR);
+		}
+
 
 		$this->tmp_dir = $this->working_dir . "tmp" . DIRECTORY_SEPARATOR;
 		mkdir($this->tmp_dir, 0755, true);
