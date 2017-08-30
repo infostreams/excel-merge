@@ -75,6 +75,8 @@ class ExcelMerge {
 		// ignore whatever extension the user might have given us and use the one
 		// we obtained in 'zipContents' (i.e. either XLSX or XLSM)
 		$where =
+			pathinfo($where, PATHINFO_DIRNAME) .
+			DIRECTORY_SEPARATOR .
 			pathinfo($where, PATHINFO_FILENAME) . "." .
 			pathinfo($zipfile, PATHINFO_EXTENSION);
 
