@@ -19,10 +19,11 @@ Installation
 Use
 ---
 
-Provided that you have already included the Composer autoloader (```vendor/autoload.php```) you can 
-simply do 
+The most basic use of this software looks something like this 
 
     <?php
+      require("vendor/autoload.php");
+    
       $files = array("sheet_with_vba_code.xlsm", "generated_file.xlsx", "tmp/third_file.xlsx");
       
       $merged = new ExcelMerge\ExcelMerge($files);            
