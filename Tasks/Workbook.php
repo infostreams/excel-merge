@@ -32,10 +32,37 @@ class Workbook extends MergeTask {
 
 		// make sure all worksheets have the correct rId - we might have assigned them new ids
 		// in the Tasks\WorkbookRels::merge() method
-		$elems = $xpath->query("//m:sheets/m:sheet");
-		foreach ($elems as $e) {
-			$e->setAttribute("r:id", "rId" . ($e->getAttribute("sheetId")));
+		
+		// Caroline Clep: this is breaking the result file - need to make sure we don't touch the sheets ids and only update the external links
+		//$elems = $xpath->query("//m:sheets/m:sheet");
+		//foreach ($elems as $e) {
+		//	$e->setAttribute("r:id", "rId" . ($e->getAttribute("sheetId")));
+		//}
+		
+		$relfilename = "{$this->result_dir}/xl/_rels/workbook.xml.rels";
+		$reldom = new \DOMDocument();
+		$reldom->load($relfilename);
+
+		$relxpath = new \DOMXPath($reldom);
+		$relxpath->registerNamespace("m", "http://schemas.openxmlformats.org/package/2006/relationships");
+		$relelems = $relxpath->query("//m:Relationship");
+
+
+		$elems = $xpath->query("//m:externalReference");
+		$refId = 1;
+		foreach ($elems as $e)
+		{
+			foreach ($relelems as $rele)
+			{
+				if ($rele->getAttribute("Target") === "externalLinks/externalLink" . $refId . ".xml")
+				{
+					$e->setAttribute("r:id", $rele->getAttribute("Id"));
+					break;
+				}
+			}
+			$refId++;
 		}
+		// Caroline Clep: End of fix
 
 		$dom->save($filename);
 	}
