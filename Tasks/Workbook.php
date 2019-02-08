@@ -1,4 +1,5 @@
 <?php
+
 namespace ExcelMerge\Tasks;
 
 /**
@@ -6,65 +7,54 @@ namespace ExcelMerge\Tasks;
  *
  * @package ExcelMerge\Tasks
  */
-class Workbook extends MergeTask {
-	public function merge() {
-		/**
-		 * 	7. xl/workbook.xml
-		 *         => add
-		 *            <sheet name="{New sheet}" sheetId="{N}" r:id="rId{N}"/>
-		 */
-		$filename = "{$this->result_dir}/xl/workbook.xml";
-		$dom = new \DOMDocument();
-		$dom->load($filename);
+class Workbook extends MergeTask
+{
+    public function merge()
+    {
+        /**
+         *    7. xl/workbook.xml
+         *         => add
+         *            <sheet name="{New sheet}" sheetId="{N}" r:id="rId{N}"/>
+         */
+        $filename = "{$this->result_dir}/xl/workbook.xml";
+        $dom = new \DOMDocument();
+        $dom->load($filename);
 
-		$xpath = new \DOMXPath($dom);
-		$xpath->registerNamespace("m", "http://schemas.openxmlformats.org/spreadsheetml/2006/main");
-		$elems = $xpath->query("//m:sheets");
-		foreach ($elems as $e) {
-			$tag = $dom->createElement('sheet');
-			$tag->setAttribute('name', $this->sheet_name);
-			$tag->setAttribute('sheetId', $this->sheet_number);
-			$tag->setAttribute('r:id', "rId" . $this->sheet_number);
+        $xpath = new \DOMXPath($dom);
+        $xpath->registerNamespace("m", "http://schemas.openxmlformats.org/spreadsheetml/2006/main");
 
-			$e->appendChild($tag);
-			break;
-		}
+        $workbookViewElemList = $xpath->query("//m:workbookView");
+        foreach ($workbookViewElemList as $workbookViewElem) {
+            $workbookViewElem->setAttribute('activeTab', '0');
+        }
 
-		// make sure all worksheets have the correct rId - we might have assigned them new ids
-		// in the Tasks\WorkbookRels::merge() method
-		
-		// Caroline Clep: this is breaking the result file - need to make sure we don't touch the sheets ids and only update the external links
-		//$elems = $xpath->query("//m:sheets/m:sheet");
-		//foreach ($elems as $e) {
-		//	$e->setAttribute("r:id", "rId" . ($e->getAttribute("sheetId")));
-		//}
-		
-		$relfilename = "{$this->result_dir}/xl/_rels/workbook.xml.rels";
-		$reldom = new \DOMDocument();
-		$reldom->load($relfilename);
+        $elems = $xpath->query("//m:sheets");
+        foreach ($elems as $e) {
+            $tag = $dom->createElement('sheet');
+            $tag->setAttribute('name', $this->sheet_name);
+            $tag->setAttribute('sheetId', $this->sheet_number);
+            $tag->setAttribute('r:id', "rId" . $this->sheet_number);
 
-		$relxpath = new \DOMXPath($reldom);
-		$relxpath->registerNamespace("m", "http://schemas.openxmlformats.org/package/2006/relationships");
-		$relelems = $relxpath->query("//m:Relationship");
+            $e->appendChild($tag);
+            break;
+        }
 
+        // make sure all worksheets have the correct rId - we might have assigned them new ids
+        // in the Tasks\WorkbookRels::merge() method
+        $elems = $xpath->query("//m:sheets/m:sheet");
+        foreach ($elems as $e) {
+            $e->setAttribute("r:id", "rId" . ($e->getAttribute("sheetId")));
+        }
 
-		$elems = $xpath->query("//m:externalReference");
-		$refId = 1;
-		foreach ($elems as $e)
-		{
-			foreach ($relelems as $rele)
-			{
-				if ($rele->getAttribute("Target") === "externalLinks/externalLink" . $refId . ".xml")
-				{
-					$e->setAttribute("r:id", $rele->getAttribute("Id"));
-					break;
-				}
-			}
-			$refId++;
-		}
-		// Caroline Clep: End of fix
+        $calcOptionTagList = $xpath->query("//m:calcPr");
+        foreach ($calcOptionTagList as $calcOptionTag) {
+            $calcOptionTag->setAttribute('calcId', '999999');
+            $calcOptionTag->setAttribute('calcMode', 'auto');
+            $calcOptionTag->setAttribute('calcCompleted', '0');
+            $calcOptionTag->setAttribute('fullCalcOnLoad', '1');
+            $calcOptionTag->setAttribute('forceFullCalc', '1');
+        }
 
-		$dom->save($filename);
-	}
-
+        $dom->save($filename);
+    }
 }

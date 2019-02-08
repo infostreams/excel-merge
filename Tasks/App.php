@@ -32,22 +32,6 @@ class App extends MergeTask {
 
 		$elems = $xpath->query("//m:TitlesOfParts/mvt:vector");
 		foreach ($elems as $e) {
-			
-			// Caroline Clep: Rename if already exists
-			$nodes = $e->childNodes;
-			foreach ($nodes as $node)
-			{
-				if ($node->nodeValue === $this->sheet_name)
-				{
-					$node->nodeValue = 'Previous_' . $node->nodeValue;
-					break;
-				}
-			}
-
-			// Caroline Clep: sheets numbers incorrectly
-			// $e->setAttribute('size', $this->sheet_number);
-			$e->setAttribute('size', $e->getAttribute('size') + 1);
-			
 			$e->setAttribute('size', $this->sheet_number);
 
 			$tag = $dom->createElement('vt:lpstr');
