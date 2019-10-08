@@ -15,6 +15,7 @@ class Styles extends MergeTask
 {
     protected $style_tags = ['fonts', 'fills', 'borders', 'dxfs'];
     private $definedStyles = [];
+    private $newFmtId = 1000;
 
     /**
      * @param null $zip_dir
@@ -160,7 +161,6 @@ class Styles extends MergeTask
         $tag = 'numFmts';
         $elems = $source_xpath->query("//m:{$tag}");
         $mapping[$tag] = [];
-        $newFmtId = 1000;
         if ($elems && $elems->item(0) && $elems->item(0)->hasChildNodes()) {
             foreach ($elems->item(0)->childNodes as $id => $style) {
                 $mergedFmtId = (int)$style->getAttribute('numFmtId');
@@ -174,16 +174,16 @@ class Styles extends MergeTask
                 }
 
                 // this is a new style
-                $newFmtId++;
+                $this->newFmtId++;
                 $new_id = \count($existing_styles[$tag]);
                 $newStyle = $style;
-                $newStyle->setAttribute('numFmtId', $newFmtId);
+                $newStyle->setAttribute('numFmtId', $this->newFmtId);
                 $existing_styles[$tag][$new_id] = [
                     'node' => $newStyle,
                     'string' => $newStyle->C14N(true, false),
                     'id' => $new_id,
                 ];
-                $mapping[$tag][$mergedFmtId] = $newFmtId;
+                $mapping[$tag][$mergedFmtId] = $this->newFmtId;
             }
         }
         return [$mapping, $existing_styles];
