@@ -36,6 +36,7 @@ class Worksheet extends MergeTask {
 		$this->remapSharedStrings($sheet, $shared_strings_mapping);
 		$this->remapStyles($sheet, $styles_mapping);
 		$this->remapConditionalStyles($sheet, $conditional_styles_mapping);
+		$this->remapColsStyles($sheet, $styles_mapping); 
 
 		// save worksheet with adjustments
 		$sheet->save($new_name);
@@ -88,6 +89,10 @@ class Worksheet extends MergeTask {
 		$this->doRemapping($sheet, "//m:conditionalFormatting/m:cfRule[@dxfId]", "dxfId", $mapping);
 	}
 
+	protected function remapColsStyles($sheet, $mapping) {
+		$this->doRemapping($sheet, "//m:col[@Style]", "style", $mapping);
+	}
+	
 	protected function doRemapping($sheet, $xpath_query, $attribute, $mapping) {
 		// adjust references to styles
 		$xpath = new \DOMXPath($sheet);
