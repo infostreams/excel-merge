@@ -47,7 +47,7 @@ class SharedStrings extends MergeTask {
 				$mapping[$i] = count($shared_strings) - 1;
 			}
 		}
-
+		$target->documentElement->setAttribute('uniqueCount',count($shared_strings)); // <-- update uniqueCount
 		$target->save($target_filename);
 
 		return $mapping;
