@@ -203,7 +203,7 @@ class Styles extends MergeTask {
 
 					// this is a new style!
 					$new_id = count($defined_styles);
-					$defined_styles[$id] = array(
+					$defined_styles[$new_id] = array(
 						"node" => $style,
 						"string" => $style->C14N(true, false),
 						"id" => $new_id
